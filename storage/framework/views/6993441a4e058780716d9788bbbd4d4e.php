@@ -304,6 +304,9 @@
                     <a href="<?php echo e(route('guru.nilai')); ?>" class="nav-item <?php echo e(request()->routeIs('guru.nilai') ? 'active' : ''); ?>">
                         <i class="fas fa-star"></i> Lihat Nilai
                     </a>
+                    <a href="<?php echo e(route('guru.pengumuman')); ?>" class="nav-item <?php echo e(request()->routeIs('guru.pengumuman') ? 'active' : ''); ?>">
+                        <i class="fas fa-bullhorn"></i> Pengumuman
+                    </a>
 
                 <?php elseif(auth()->user()->isSiswa()): ?>
                     <div class="nav-label">Menu Siswa</div>
@@ -321,6 +324,9 @@
                     </a>
                     <a href="<?php echo e(route('siswa.rapot')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.rapot') ? 'active' : ''); ?>">
                         <i class="fas fa-file-alt"></i> Rapot
+                    </a>
+                    <a href="<?php echo e(route('siswa.pengumuman')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.pengumuman') ? 'active' : ''); ?>">
+                        <i class="fas fa-bullhorn"></i> Pengumuman
                     </a>
                     <?php if(auth()->user()->canAccessPtn()): ?>
                         <div class="nav-label">🎓 Khusus Kelas 12</div>
