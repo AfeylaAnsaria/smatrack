@@ -142,4 +142,22 @@ class SiswaController extends Controller
 
         return view('siswa.kuliah', compact('dataKuliah','sk','user','ptns'));
     }
+
+    public function pengumuman()
+    {
+        $user = Auth::user();
+        $ta = TahunAjaran::aktif();
+        $sk = $this->getKelasAktif();
+        $kelas = $sk?->kelas;
+
+        $pengumumans = Pengumuman::where(function($q) use ($kelas) {
+            $q->where('untuk','semua')
+              ->orWhere('untuk','siswa');
+            if ($kelas && $kelas->tingkat == '12') {
+                $q->orWhere('untuk','kelas12');
+            }
+        })->latest()->paginate(15);
+
+        return view('siswa.pengumuman', compact('pengumumans','sk'));
+    }
 }

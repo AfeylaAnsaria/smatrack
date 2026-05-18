@@ -322,6 +322,9 @@
                     <a href="{{ route('siswa.rapot') }}" class="nav-item {{ request()->routeIs('siswa.rapot') ? 'active' : '' }}">
                         <i class="fas fa-file-alt"></i> Rapot
                     </a>
+                    <a href="{{ route('siswa.pengumuman') }}" class="nav-item {{ request()->routeIs('siswa.pengumuman') ? 'active' : '' }}">
+                        <i class="fas fa-bullhorn"></i> Pengumuman
+                    </a>
                     @if(auth()->user()->canAccessPtn())
                         <div class="nav-label">🎓 Khusus Kelas 12</div>
                         <a href="{{ route('siswa.kuliah') }}" class="nav-item {{ request()->routeIs('siswa.kuliah') ? 'active' : '' }}">

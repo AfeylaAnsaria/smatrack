@@ -75,4 +75,5 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:siswa'])->grou
     Route::get('/rapot', [SiswaController::class, 'rapot'])->name('rapot');
     Route::get('/jadwal', [SiswaController::class, 'jadwal'])->name('jadwal');
     Route::get('/kuliah', [SiswaController::class, 'kuliah'])->name('kuliah');
+    Route::get('/pengumuman', [SiswaController::class, 'pengumuman'])->name('pengumuman');
 });
