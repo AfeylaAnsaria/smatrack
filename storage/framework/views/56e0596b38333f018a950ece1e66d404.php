@@ -1,25 +1,25 @@
-@extends('layouts.app')
-@section('title', 'Data Siswa')
-@section('page-title', 'Data Siswa')
-@section('page-subtitle', 'Kelola data seluruh siswa')
 
-@section('content')
+<?php $__env->startSection('title', 'Data Siswa'); ?>
+<?php $__env->startSection('page-title', 'Data Siswa'); ?>
+<?php $__env->startSection('page-subtitle', 'Kelola data seluruh siswa'); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
     <div>
         <h1 class="page-header" style="font-size:24px;font-weight:800;">Data Siswa</h1>
-        <p class="text-muted">Total {{ $siswa->total() }} siswa terdaftar</p>
+        <p class="text-muted">Total <?php echo e($siswa->total()); ?> siswa terdaftar</p>
     </div>
     <button class="btn btn-primary" onclick="openModal('modalTambahSiswa')">
 
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
     <script>
         document.addEventListener('DOMContentLoaded', function(){
-            @if($errors->any())
+            <?php if($errors->any()): ?>
                 openModal('modalTambahSiswa');
-            @endif
+            <?php endif; ?>
         });
     </script>
-    @endpush
+    <?php $__env->stopPush(); ?>
         <i class="fas fa-plus"></i> Tambah Siswa
     </button>
 </div>
@@ -39,47 +39,49 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($siswa as $i => $s)
+                <?php $__empty_1 = true; $__currentLoopData = $siswa; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $s): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr>
-                    <td style="color:var(--text-muted);font-size:12px;">{{ $siswa->firstItem() + $i }}</td>
+                    <td style="color:var(--text-muted);font-size:12px;"><?php echo e($siswa->firstItem() + $i); ?></td>
                     <td>
                         <div style="display:flex;align-items:center;gap:10px;">
                             <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pink-300),var(--pink-500));color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;">
-                                {{ strtoupper(substr($s->name,0,1)) }}
+                                <?php echo e(strtoupper(substr($s->name,0,1))); ?>
+
                             </div>
                             <div>
-                                <div style="font-weight:600;font-size:14px;">{{ $s->name }}</div>
-                                <div style="font-size:11px;color:var(--text-muted);">{{ $s->email }}</div>
+                                <div style="font-weight:600;font-size:14px;"><?php echo e($s->name); ?></div>
+                                <div style="font-size:11px;color:var(--text-muted);"><?php echo e($s->email); ?></div>
                             </div>
                         </div>
                     </td>
-                    <td><span class="badge badge-pink">{{ $s->nis ?? '-' }}</span></td>
-                    <td style="font-size:13px;">{{ $s->email }}</td>
+                    <td><span class="badge badge-pink"><?php echo e($s->nis ?? '-'); ?></span></td>
+                    <td style="font-size:13px;"><?php echo e($s->email); ?></td>
                     <td>
-                        @php $sk = $s->siswaKelas->first(); @endphp
-                        @if($sk)
-                            <span class="badge badge-{{ $sk->kelas->tingkat == '12' ? 'rose' : ($sk->kelas->tingkat == '11' ? 'purple' : 'blue') }}">
-                                {{ $sk->kelas->nama_kelas }}
+                        <?php $sk = $s->siswaKelas->first(); ?>
+                        <?php if($sk): ?>
+                            <span class="badge badge-<?php echo e($sk->kelas->tingkat == '12' ? 'rose' : ($sk->kelas->tingkat == '11' ? 'purple' : 'blue')); ?>">
+                                <?php echo e($sk->kelas->nama_kelas); ?>
+
                             </span>
-                        @else
+                        <?php else: ?>
                             <span class="badge badge-gray">Belum ada kelas</span>
-                        @endif
+                        <?php endif; ?>
                     </td>
-                    <td style="font-size:13px;">{{ $s->no_hp ?? '-' }}</td>
+                    <td style="font-size:13px;"><?php echo e($s->no_hp ?? '-'); ?></td>
                     <td>
-                        <form method="POST" action="{{ route('admin.siswa.destroy', $s->id) }}" onsubmit="return confirm('Hapus siswa ini?')">
-                            @csrf @method('DELETE')
+                        <form method="POST" action="<?php echo e(route('admin.siswa.destroy', $s->id)); ?>" onsubmit="return confirm('Hapus siswa ini?')">
+                            <?php echo csrf_field(); ?> <?php echo method_field('DELETE'); ?>
                             <button type="submit" class="btn btn-danger btn-sm btn-icon"><i class="fas fa-trash"></i></button>
                         </form>
                     </td>
                 </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr><td colspan="7"><div class="empty-state"><i class="fas fa-user-graduate"></i><p>Belum ada siswa</p></div></td></tr>
-                @endforelse
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
-    <div style="margin-top:16px;">{{ $siswa->links() }}</div>
+    <div style="margin-top:16px;"><?php echo e($siswa->links()); ?></div>
 </div>
 
 <!-- Modal Tambah Siswa -->
@@ -89,21 +91,21 @@
             <div class="modal-title">➕ Tambah Siswa Baru</div>
             <button class="modal-close" onclick="closeModal('modalTambahSiswa')"><i class="fas fa-times"></i></button>
         </div>
-        <form method="POST" action="{{ route('admin.siswa.store') }}">
-            @csrf
-            @if($errors->any())
+        <form method="POST" action="<?php echo e(route('admin.siswa.store')); ?>">
+            <?php echo csrf_field(); ?>
+            <?php if($errors->any()): ?>
             <div style="margin-bottom:12px;">
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-circle"></i>
                     <strong>Terdapat error pada input:</strong>
                     <ul style="margin-top:6px;margin-left:18px;">
-                        @foreach($errors->all() as $err)
-                        <li>{{ $err }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $err): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($err); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
             </div>
-            @endif
+            <?php endif; ?>
             <div class="form-group">
                 <label class="form-label">Nama Lengkap *</label>
                 <input type="text" name="name" class="form-control" placeholder="Nama siswa" required>
@@ -135,20 +137,21 @@
                 <label class="form-label">Kelas *</label>
                 <select name="kelas_id" class="form-control" required>
                     <option value="">-- Pilih Kelas --</option>
-                    @foreach($kelas as $k)
-                    <option value="{{ $k->id }}">{{ $k->nama_kelas }} (Kelas {{ $k->tingkat }})</option>
-                    @endforeach
+                    <?php $__currentLoopData = $kelas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $k): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($k->id); ?>"><?php echo e($k->nama_kelas); ?> (Kelas <?php echo e($k->tingkat); ?>)</option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="form-group">
                 <label class="form-label">Tahun Ajaran *</label>
                 <select name="tahun_ajaran_id" class="form-control" required>
                     <option value="">-- Pilih Tahun Ajaran --</option>
-                    @foreach($tas as $ta)
-                    <option value="{{ $ta->id }}" {{ $ta->is_aktif ? 'selected' : '' }}>
-                        {{ $ta->tahun }} {{ $ta->is_aktif ? '(Aktif)' : '' }}
+                    <?php $__currentLoopData = $tas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ta): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($ta->id); ?>" <?php echo e($ta->is_aktif ? 'selected' : ''); ?>>
+                        <?php echo e($ta->tahun); ?> <?php echo e($ta->is_aktif ? '(Aktif)' : ''); ?>
+
                     </option>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
             <div class="form-group">
@@ -161,4 +164,5 @@
         </form>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\smatrack\resources\views/admin/siswa/index.blade.php ENDPATH**/ ?>

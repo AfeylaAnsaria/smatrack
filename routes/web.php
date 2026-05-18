@@ -51,6 +51,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/kuliah', [AdminController::class, 'kuliahIndex'])->name('kuliah.index');
     Route::post('/kuliah', [AdminController::class, 'kuliahStore'])->name('kuliah.store');
     Route::put('/kuliah/{id}', [AdminController::class, 'kuliahUpdate'])->name('kuliah.update');
+    Route::delete('/kuliah/{id}', [AdminController::class, 'kuliahDestroy'])->name('kuliah.destroy');
 
     // Pengumuman
     Route::get('/pengumuman', [AdminController::class, 'pengumumanIndex'])->name('pengumuman.index');

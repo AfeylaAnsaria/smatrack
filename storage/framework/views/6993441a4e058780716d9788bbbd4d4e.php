@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'SMAtrack') — Sistem Akademik SMA</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'SMAtrack'); ?> — Sistem Akademik SMA</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -228,20 +228,20 @@
             .grid-2,.grid-3 { grid-template-columns:1fr; }
         }
     </style>
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="sidebar-logo-inner">
                 <div class="logo-img-wrap">
-                    @if(file_exists(public_path('logo.jpg')))
-                        <img src="{{ asset('logo.jpg') }}" alt="Logo">
-                    @elseif(file_exists(public_path('logo.png')))
-                        <img src="{{ asset('logo.png') }}" alt="Logo">
-                    @else
+                    <?php if(file_exists(public_path('logo.jpg'))): ?>
+                        <img src="<?php echo e(asset('logo.jpg')); ?>" alt="Logo">
+                    <?php elseif(file_exists(public_path('logo.png'))): ?>
+                        <img src="<?php echo e(asset('logo.png')); ?>" alt="Logo">
+                    <?php else: ?>
                         <span class="logo-emoji">🏫</span>
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div>
                     <h1>SMAtrack</h1>
@@ -251,90 +251,90 @@
         </div>
 
         <div class="sidebar-user">
-            <div class="avatar">{{ strtoupper(substr(auth()->user()->name,0,1)) }}</div>
+            <div class="avatar"><?php echo e(strtoupper(substr(auth()->user()->name,0,1))); ?></div>
             <div>
-                <div class="name">{{ auth()->user()->name }}</div>
-                <span class="role">{{ auth()->user()->role }}</span>
+                <div class="name"><?php echo e(auth()->user()->name); ?></div>
+                <span class="role"><?php echo e(auth()->user()->role); ?></span>
             </div>
         </div>
 
         <nav class="sidebar-nav">
-            @auth
-                @if(auth()->user()->isAdmin())
+            <?php if(auth()->guard()->check()): ?>
+                <?php if(auth()->user()->isAdmin()): ?>
                     <div class="nav-label">Menu Admin</div>
-                    <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.dashboard')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="{{ route('admin.siswa.index') }}" class="nav-item {{ request()->routeIs('admin.siswa.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.siswa.index')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.siswa.*') ? 'active' : ''); ?>">
                         <i class="fas fa-user-graduate"></i> Data Siswa
                     </a>
-                    <a href="{{ route('admin.guru.index') }}" class="nav-item {{ request()->routeIs('admin.guru.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.guru.index')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.guru.*') ? 'active' : ''); ?>">
                         <i class="fas fa-chalkboard-teacher"></i> Data Guru
                     </a>
-                    <a href="{{ route('admin.kelas.index') }}" class="nav-item {{ request()->routeIs('admin.kelas.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.kelas.index')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.kelas.*') ? 'active' : ''); ?>">
                         <i class="fas fa-school"></i> Kelas
                     </a>
-                    <a href="{{ route('admin.absensi.index') }}" class="nav-item {{ request()->routeIs('admin.absensi.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.absensi.index')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.absensi.*') ? 'active' : ''); ?>">
                         <i class="fas fa-clipboard-check"></i> Absensi
                     </a>
-                    <a href="{{ route('admin.nilai.index') }}" class="nav-item {{ request()->routeIs('admin.nilai.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.nilai.index')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.nilai.*') ? 'active' : ''); ?>">
                         <i class="fas fa-star"></i> Input Nilai
                     </a>
                     <div class="nav-label">Khusus Kelas 12</div>
-                    <a href="{{ route('admin.kuliah.index') }}" class="nav-item {{ request()->routeIs('admin.kuliah.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.kuliah.index')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.kuliah.*') ? 'active' : ''); ?>">
                         <i class="fas fa-university"></i> Data Kuliah
                         <span class="nav-badge">12</span>
                     </a>
                     <div class="nav-label">Lainnya</div>
-                    <a href="{{ route('admin.pengumuman.index') }}" class="nav-item {{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('admin.pengumuman.index')); ?>" class="nav-item <?php echo e(request()->routeIs('admin.pengumuman.*') ? 'active' : ''); ?>">
                         <i class="fas fa-bullhorn"></i> Pengumuman
                     </a>
 
-                @elseif(auth()->user()->isGuru())
+                <?php elseif(auth()->user()->isGuru()): ?>
                     <div class="nav-label">Menu Guru</div>
-                    <a href="{{ route('guru.dashboard') }}" class="nav-item {{ request()->routeIs('guru.dashboard') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('guru.dashboard')); ?>" class="nav-item <?php echo e(request()->routeIs('guru.dashboard') ? 'active' : ''); ?>">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="{{ route('guru.jadwal') }}" class="nav-item {{ request()->routeIs('guru.jadwal') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('guru.jadwal')); ?>" class="nav-item <?php echo e(request()->routeIs('guru.jadwal') ? 'active' : ''); ?>">
                         <i class="fas fa-calendar-alt"></i> Jadwal Mengajar
                     </a>
-                    <a href="{{ route('guru.absensi') }}" class="nav-item {{ request()->routeIs('guru.absensi') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('guru.absensi')); ?>" class="nav-item <?php echo e(request()->routeIs('guru.absensi') ? 'active' : ''); ?>">
                         <i class="fas fa-clipboard-check"></i> Lihat Absensi
                     </a>
-                    <a href="{{ route('guru.nilai') }}" class="nav-item {{ request()->routeIs('guru.nilai') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('guru.nilai')); ?>" class="nav-item <?php echo e(request()->routeIs('guru.nilai') ? 'active' : ''); ?>">
                         <i class="fas fa-star"></i> Lihat Nilai
                     </a>
 
-                @elseif(auth()->user()->isSiswa())
+                <?php elseif(auth()->user()->isSiswa()): ?>
                     <div class="nav-label">Menu Siswa</div>
-                    <a href="{{ route('siswa.dashboard') }}" class="nav-item {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('siswa.dashboard')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.dashboard') ? 'active' : ''); ?>">
                         <i class="fas fa-home"></i> Dashboard
                     </a>
-                    <a href="{{ route('siswa.jadwal') }}" class="nav-item {{ request()->routeIs('siswa.jadwal') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('siswa.jadwal')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.jadwal') ? 'active' : ''); ?>">
                         <i class="fas fa-calendar-alt"></i> Jadwal Pelajaran
                     </a>
-                    <a href="{{ route('siswa.absensi') }}" class="nav-item {{ request()->routeIs('siswa.absensi') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('siswa.absensi')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.absensi') ? 'active' : ''); ?>">
                         <i class="fas fa-clipboard-check"></i> Absensi Saya
                     </a>
-                    <a href="{{ route('siswa.nilai') }}" class="nav-item {{ request()->routeIs('siswa.nilai') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('siswa.nilai')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.nilai') ? 'active' : ''); ?>">
                         <i class="fas fa-star"></i> Nilai Saya
                     </a>
-                    <a href="{{ route('siswa.rapot') }}" class="nav-item {{ request()->routeIs('siswa.rapot') ? 'active' : '' }}">
+                    <a href="<?php echo e(route('siswa.rapot')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.rapot') ? 'active' : ''); ?>">
                         <i class="fas fa-file-alt"></i> Rapot
                     </a>
-                    @if(auth()->user()->canAccessPtn())
+                    <?php if(auth()->user()->canAccessPtn()): ?>
                         <div class="nav-label">🎓 Khusus Kelas 12</div>
-                        <a href="{{ route('siswa.kuliah') }}" class="nav-item {{ request()->routeIs('siswa.kuliah') ? 'active' : '' }}">
+                        <a href="<?php echo e(route('siswa.kuliah')); ?>" class="nav-item <?php echo e(request()->routeIs('siswa.kuliah') ? 'active' : ''); ?>">
                             <i class="fas fa-university"></i> Data Kuliah
                         </a>
-                    @endif
-                @endif
-            @endauth
+                    <?php endif; ?>
+                <?php endif; ?>
+            <?php endif; ?>
         </nav>
 
         <div class="sidebar-footer">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
+            <form method="POST" action="<?php echo e(route('logout')); ?>">
+                <?php echo csrf_field(); ?>
                 <button type="submit" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> Keluar
                 </button>
@@ -345,32 +345,35 @@
     <main class="main">
         <header class="topbar">
             <div class="topbar-title">
-                <h2>@yield('page-title','Dashboard')</h2>
-                <p>@yield('page-subtitle', date('l, d F Y'))</p>
+                <h2><?php echo $__env->yieldContent('page-title','Dashboard'); ?></h2>
+                <p><?php echo $__env->yieldContent('page-subtitle', date('l, d F Y')); ?></p>
             </div>
             <div class="topbar-right">
                 <div style="font-size:12px;color:var(--text-muted);text-align:right;">
-                    <div style="font-weight:600;color:var(--text);">{{ auth()->user()->name }}</div>
-                    <div>{{ ucfirst(auth()->user()->role) }}</div>
+                    <div style="font-weight:600;color:var(--text);"><?php echo e(auth()->user()->name); ?></div>
+                    <div><?php echo e(ucfirst(auth()->user()->role)); ?></div>
                 </div>
                 <div style="width:38px;height:38px;background:linear-gradient(135deg,var(--blue-400),var(--blue-600));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px;">
-                    {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+                    <?php echo e(strtoupper(substr(auth()->user()->name,0,1))); ?>
+
                 </div>
             </div>
         </header>
 
         <div class="content">
-            @if(session('success'))
+            <?php if(session('success')): ?>
             <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i> {{ session('success') }}
+                <i class="fas fa-check-circle"></i> <?php echo e(session('success')); ?>
+
             </div>
-            @endif
-            @if(session('error'))
+            <?php endif; ?>
+            <?php if(session('error')): ?>
             <div class="alert alert-danger">
-                <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+                <i class="fas fa-exclamation-circle"></i> <?php echo e(session('error')); ?>
+
             </div>
-            @endif
-            @yield('content')
+            <?php endif; ?>
+            <?php echo $__env->yieldContent('content'); ?>
         </div>
     </main>
 
@@ -387,6 +390,6 @@
             o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('show'); });
         });
     </script>
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\smatrack\resources\views/layouts/app.blade.php ENDPATH**/ ?>

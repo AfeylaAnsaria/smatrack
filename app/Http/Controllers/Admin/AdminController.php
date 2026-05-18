@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\{User, Kelas, Absensi, Nilai, DataKuliah, Pengumuman, TahunAjaran, MataPelajaran, SiswaKelas};
+use App\Models\{User, Kelas, Absensi, Nilai, DataKuliah, Pengumuman, TahunAjaran, MataPelajaran, SiswaKelas, Ptn};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -57,6 +57,16 @@ class AdminController extends Controller
             'kelas_id' => 'required|exists:kelas,id',
             'tahun_ajaran_id' => 'required|exists:tahun_ajarans,id',
         ]);
+
+        $kelas = Kelas::findOrFail($data['kelas_id']);
+        $emailLocalPart = strtolower((string) strtok($data['email'], '@'));
+        $tingkatDariEmail = User::detectTingkatFromIdentifier($emailLocalPart);
+
+        if ($tingkatDariEmail !== $kelas->tingkat) {
+            return back()->withErrors([
+                'email' => 'Format email siswa harus menandakan tingkat kelas. Gunakan pola seperti tanti.'.$kelas->tingkat.'@siswa.com untuk kelas '.$kelas->tingkat.'.',
+            ])->withInput();
+        }
 
         $user = User::create([
             'name' => $data['name'],
@@ -295,7 +305,9 @@ class AdminController extends Controller
             })
             ->get();
 
-        return view('admin.kuliah.index', compact('data','stats','siswaKelas12'));
+        $ptns = Ptn::orderBy('name')->pluck('name')->toArray();
+
+        return view('admin.kuliah.index', compact('data','stats','siswaKelas12','ptns'));
     }
 
     public function kuliahStore(Request $request)

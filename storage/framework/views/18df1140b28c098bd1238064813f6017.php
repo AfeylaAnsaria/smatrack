@@ -118,13 +118,13 @@
     <!-- Logo + Judul + Deskripsi -->
     <div class="top-section">
         <div class="logo-wrap">
-            @if(file_exists(public_path('logo.jpg')))
-                <img src="{{ asset('logo.jpg') }}" alt="Logo">
-            @elseif(file_exists(public_path('logo.png')))
-                <img src="{{ asset('logo.png') }}" alt="Logo">
-            @else
+            <?php if(file_exists(public_path('logo.jpg'))): ?>
+                <img src="<?php echo e(asset('logo.jpg')); ?>" alt="Logo">
+            <?php elseif(file_exists(public_path('logo.png'))): ?>
+                <img src="<?php echo e(asset('logo.png')); ?>" alt="Logo">
+            <?php else: ?>
                 <span class="logo-fallback">🎀</span>
-            @endif
+            <?php endif; ?>
         </div>
         <h1>Selamat Datang di SMAtrack</h1>
         <p>Platform akademik modern untuk siswa, guru, dan admin SMA. Kelola absensi, nilai, jadwal & lebih banyak lagi!</p>
@@ -135,21 +135,22 @@
         <h2>Masuk ke Akun</h2>
         <div class="subtitle">Gunakan email atau username siswa dan password yang diberikan admin</div>
 
-        @if($errors->any())
+        <?php if($errors->any()): ?>
         <div class="error-msg">
-            <i class="fas fa-exclamation-circle"></i> {{ $errors->first() }}
-        </div>
-        @endif
+            <i class="fas fa-exclamation-circle"></i> <?php echo e($errors->first()); ?>
 
-        <form method="POST" action="{{ route('login.post') }}">
-            @csrf
+        </div>
+        <?php endif; ?>
+
+        <form method="POST" action="<?php echo e(route('login.post')); ?>">
+            <?php echo csrf_field(); ?>
             <div class="form-group">
                 <label class="form-label">Email / Username</label>
                 <div class="input-wrap">
                     <i class="fas fa-envelope input-icon"></i>
                     <input type="text" name="login" class="form-input"
                         placeholder="contoh: tanti.12 atau tanti.12@siswa.com"
-                        value="{{ old('login') }}" required autofocus>
+                        value="<?php echo e(old('login')); ?>" required autofocus>
                 </div>
             </div>
             <div class="form-group">
@@ -196,4 +197,4 @@ function fillLogin(loginValue) {
 }
 </script>
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\smatrack\resources\views/auth/login.blade.php ENDPATH**/ ?>

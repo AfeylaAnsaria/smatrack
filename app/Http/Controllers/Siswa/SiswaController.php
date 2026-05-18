@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
-use App\Models\{Absensi, Nilai, Jadwal, Pengumuman, TahunAjaran, DataKuliah};
+use App\Models\{Absensi, Nilai, Jadwal, Pengumuman, TahunAjaran, DataKuliah, Ptn};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +38,7 @@ class SiswaController extends Controller
             }
         })->latest()->take(5)->get();
 
-        $isKelas12 = $kelas && $kelas->tingkat == '12';
+        $isKelas12 = $user->canAccessPtn();
         $dataKuliah = $isKelas12 ? DataKuliah::where('siswa_id',$user->id)->where('tahun_ajaran_id',$ta?->id)->first() : null;
 
         return view('siswa.dashboard', compact('user','kelas','statsAbsensi','pengumumans','isKelas12','dataKuliah','ta'));
@@ -130,7 +130,7 @@ class SiswaController extends Controller
         $ta = TahunAjaran::aktif();
         $sk = $this->getKelasAktif();
 
-        if (!$sk || $sk->kelas->tingkat != '12') {
+        if (!$user->canAccessPtn()) {
             abort(403, 'Fitur ini hanya untuk siswa kelas 12.');
         }
 
@@ -138,6 +138,8 @@ class SiswaController extends Controller
             ->where('tahun_ajaran_id',$ta?->id)
             ->first();
 
-        return view('siswa.kuliah', compact('dataKuliah','sk','user'));
+        $ptns = Ptn::orderBy('name')->pluck('name')->toArray();
+
+        return view('siswa.kuliah', compact('dataKuliah','sk','user','ptns'));
     }
 }
