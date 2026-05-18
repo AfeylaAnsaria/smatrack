@@ -65,6 +65,7 @@ Route::prefix('guru')->name('guru.')->middleware(['auth', 'role:guru'])->group(f
     Route::get('/absensi', [GuruController::class, 'absensi'])->name('absensi');
     Route::get('/nilai', [GuruController::class, 'nilai'])->name('nilai');
     Route::get('/jadwal', [GuruController::class, 'jadwal'])->name('jadwal');
+    Route::get('/pengumuman', [GuruController::class, 'pengumuman'])->name('pengumuman');
 });
 
 // ================ SISWA ================

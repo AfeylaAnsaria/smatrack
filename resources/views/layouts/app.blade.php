@@ -304,6 +304,9 @@
                     <a href="{{ route('guru.nilai') }}" class="nav-item {{ request()->routeIs('guru.nilai') ? 'active' : '' }}">
                         <i class="fas fa-star"></i> Lihat Nilai
                     </a>
+                    <a href="{{ route('guru.pengumuman') }}" class="nav-item {{ request()->routeIs('guru.pengumuman') ? 'active' : '' }}">
+                        <i class="fas fa-bullhorn"></i> Pengumuman
+                    </a>
 
                 @elseif(auth()->user()->isSiswa())
                     <div class="nav-label">Menu Siswa</div>

@@ -92,4 +92,16 @@ class GuruController extends Controller
 
         return view('guru.jadwal', compact('jadwals'));
     }
+
+    public function pengumuman()
+    {
+        $user = Auth::user();
+        $ta = TahunAjaran::aktif();
+
+        $pengumumans = Pengumuman::where(function($q){
+            $q->where('untuk','semua')->orWhere('untuk','guru');
+        })->latest()->paginate(15);
+
+        return view('guru.pengumuman', compact('pengumumans'));
+    }
 }
